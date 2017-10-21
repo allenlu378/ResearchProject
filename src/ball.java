@@ -131,11 +131,19 @@ import org.opencv.videoio.VideoCapture;
      //new Mat();//new Size(webcam_image.width(),webcam_image.height()),CvType.CV_8UC1);  
      List<Mat> lhsv = new ArrayList<Mat>(3);      
      Mat circles = new Mat(); // No need (and don't know how) to initialize it.  
-                  // The function later will do it... (to a 1*N*CV_32FC3)  
-     Scalar hsv_min = new Scalar(0, 100, 100, 0);  
-     Scalar hsv_max = new Scalar(6, 200, 200, 0);  
-     Scalar hsv_min2 = new Scalar(0, 50, 50, 0);  
-     Scalar hsv_max2 = new Scalar(50, 250, 250, 0);  
+                  // The function later will do it... (to a 1*N*CV_32FC3) 
+     //tennis ball
+     //Scalar hsv_min = new Scalar(0, 100, 100, 0);  
+     //Scalar hsv_max = new Scalar(6, 200, 200, 0);  
+     //Scalar hsv_min2 = new Scalar(0, 50, 50, 0);  
+     //Scalar hsv_max2 = new Scalar(50, 250, 250, 0);  
+     //Brown Dot
+     Scalar hsv_min = new Scalar(0, 50, 80, 0);  
+     Scalar hsv_max = new Scalar(3, 200, 130, 0);  
+     Scalar hsv_min2 = new Scalar(0, 50, 80, 0);  
+     Scalar hsv_max2 = new Scalar(50, 250, 130, 0);
+     //Scalar hsv_min2 = new Scalar(0, 0, 50, 50);  
+     //Scalar hsv_max2 = new Scalar(256, 200, 200, 200);  
      double[] data=new double[3];  
      if( capture.isOpened())  
      {  
@@ -146,7 +154,7 @@ import org.opencv.videoio.VideoCapture;
          {  
           // One way to select a range of colors by Hue  
           Imgproc.cvtColor(webcam_image, hsv_image, Imgproc.COLOR_BGR2HSV);  
-          Core.inRange(hsv_image, hsv_min, hsv_max, thresholded);           
+          Core.inRange(hsv_image, new Scalar(0,100,100), new Scalar(10,255,255), thresholded);           
           Core.inRange(hsv_image, hsv_min2, hsv_max2, thresholded2);  
           Core.bitwise_or(thresholded, thresholded2, thresholded);  
           // Notice that the thresholds don't really work as a "distance"  
@@ -169,7 +177,7 @@ import org.opencv.videoio.VideoCapture;
           // Apply the Hough Transform to find the circles  
           Imgproc.GaussianBlur(thresholded, thresholded, new Size(9,9),0,0);  
           Imgproc.HoughCircles(thresholded, circles, Imgproc.CV_HOUGH_GRADIENT, 2, thresholded.height()/4, 500, 50, 0, 0);   
-          //Imgproc.Canny(thresholded, thresholded, 100, 0);  
+          Imgproc.Canny(thresholded, thresholded, 100, 0);  
           //-- 4. Add some info to the image  
           Imgproc.line(webcam_image, new Point(150,50), new Point(202,200), new Scalar(100,10,10)/*CV_BGR(100,10,10)*/, 3);  
           Imgproc.circle(webcam_image, new Point(210,210), 10, new Scalar(100,10,10),3);  
